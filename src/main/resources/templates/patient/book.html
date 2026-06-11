@@ -10,7 +10,6 @@
         <div th:replace="~{fragments :: flash}"></div>
 
         <div class="card">
-            <!-- krok 1-3: wybor specjalizacji, lekarza i daty (GET przeladowuje liste) -->
             <form method="get" th:action="@{/patient/book}" class="filter-form">
                 <div>
                     <label for="specId">Specjalizacja</label>
@@ -43,7 +42,6 @@
                         + ' (pn–pt)'}"></p>
             <p class="alert alert-error" th:if="${dateError}" th:text="${dateError}"></p>
 
-            <!-- krok 4: wybor godziny i potwierdzenie -->
             <div th:if="${slots != null}">
                 <h2>Wolne godziny</h2>
                 <p class="subtitle" th:if="${#lists.isEmpty(slots)}">

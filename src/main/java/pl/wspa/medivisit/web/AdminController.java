@@ -32,8 +32,6 @@ public class AdminController {
     private final SpecializationDao specializationDao = new SpecializationDao();
     private final AppointmentDao appointmentDao = new AppointmentDao();
 
-    // ===================== statystyki =====================
-
     @GetMapping("/stats")
     public String stats(Model model) {
         long patients = userDao.findAll().stream()
@@ -50,8 +48,6 @@ public class AdminController {
         model.addAttribute("maxSpec", Math.max(max, 1));
         return "admin/stats";
     }
-
-    // ===================== lekarze =====================
 
     @GetMapping("/doctors")
     public String doctors(Model model) {
@@ -101,7 +97,6 @@ public class AdminController {
         user.setPhone(null);
         user.setPasswordHash(PasswordUtil.hash(password));
         user.setRole(User.ROLE_DOCTOR);
-        // konto i profil lekarza powstaja w jednej transakcji
         doctorDao.createWithAccount(user, specId, room.trim(), workStart, workEnd, slotMinutes);
 
         redirect.addFlashAttribute("success", "Lekarz " + firstName + " " + lastName + " został dodany.");
@@ -175,8 +170,6 @@ public class AdminController {
         return null;
     }
 
-    // ===================== specjalizacje =====================
-
     @GetMapping("/specializations")
     public String specializations(Model model) {
         model.addAttribute("specs", specializationDao.findAll());
@@ -221,8 +214,6 @@ public class AdminController {
         return "redirect:/admin/specializations";
     }
 
-    // ===================== uzytkownicy =====================
-
     @GetMapping("/users")
     public String users(Model model) {
         model.addAttribute("users", userDao.findAll());
@@ -240,8 +231,6 @@ public class AdminController {
         }
         return "redirect:/admin/users";
     }
-
-    // ===================== wizyty =====================
 
     @GetMapping("/visits")
     public String visits(@RequestParam(required = false) String status, Model model) {

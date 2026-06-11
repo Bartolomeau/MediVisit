@@ -51,7 +51,6 @@ public class UserDao {
         }
     }
 
-    /** Zwraca id nowego uzytkownika. */
     public int insert(User user) {
         String sql = "INSERT INTO users (first_name, last_name, email, phone, password_hash, role) VALUES (?,?,?,?,?,?)";
         try (PreparedStatement ps = Database.get().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {

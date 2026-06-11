@@ -2,7 +2,6 @@ package pl.wspa.medivisit.util;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-/** Haszowanie hasel algorytmem bcrypt. */
 public final class PasswordUtil {
 
     private PasswordUtil() {

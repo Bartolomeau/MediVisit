@@ -2,7 +2,9 @@ package pl.wspa.medivisit.dao;
 
 import pl.wspa.medivisit.db.Database;
 import pl.wspa.medivisit.model.Doctor;
+import pl.wspa.medivisit.model.User;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -41,13 +43,9 @@ public class DoctorDao {
         return list.isEmpty() ? Optional.empty() : Optional.of(list.get(0));
     }
 
-    /**
-     * Tworzy konto uzytkownika i profil lekarza w jednej transakcji -
-     * jezeli ktorykolwiek INSERT sie nie powiedzie, oba sa wycofywane.
-     */
-    public void createWithAccount(pl.wspa.medivisit.model.User user, int specializationId, String room,
+    public void createWithAccount(User user, int specializationId, String room,
                                   String workStart, String workEnd, int slotMinutes) {
-        java.sql.Connection con = Database.get();
+        Connection con = Database.get();
         try {
             con.setAutoCommit(false);
             int userId = new UserDao().insert(user);
@@ -101,7 +99,6 @@ public class DoctorDao {
         }
     }
 
-    /** Usuniecie konta uzytkownika kaskadowo usuwa wpis lekarza i jego wizyty. */
     public void deleteWithUser(Doctor doctor) {
         new UserDao().delete(doctor.getUserId());
     }

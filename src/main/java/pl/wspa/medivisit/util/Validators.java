@@ -2,7 +2,6 @@ package pl.wspa.medivisit.util;
 
 import java.util.regex.Pattern;
 
-/** Walidacja danych wprowadzanych przez uzytkownika. */
 public final class Validators {
 
     private static final Pattern EMAIL = Pattern.compile("^[\\w.+-]+@[\\w-]+(\\.[\\w-]+)+$");
@@ -15,12 +14,10 @@ public final class Validators {
         return email != null && EMAIL.matcher(email.trim()).matches();
     }
 
-    /** Telefon: dokladnie 9 cyfr (format polski, bez prefiksu). */
     public static boolean isValidPhone(String phone) {
         return phone != null && PHONE.matcher(phone.trim()).matches();
     }
 
-    /** Haslo: min. 8 znakow, co najmniej jedna litera i jedna cyfra. */
     public static boolean isValidPassword(String password) {
         return password != null
                 && password.length() >= 8

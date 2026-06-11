@@ -6,10 +6,6 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.web.servlet.HandlerInterceptor;
 import pl.wspa.medivisit.model.User;
 
-/**
- * Kontrola dostepu: wymaga zalogowania, a sciezki /patient, /doctor i /admin
- * sa dostepne tylko dla odpowiedniej roli.
- */
 public class AuthInterceptor implements HandlerInterceptor {
 
     public static final String SESSION_USER = "user";

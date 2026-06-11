@@ -46,7 +46,6 @@ public class SpecializationDao {
         }
     }
 
-    /** Usuwa specjalizacje, o ile nie jest przypisana do zadnego lekarza. */
     public boolean delete(int id) {
         try {
             try (PreparedStatement check = Database.get().prepareStatement(

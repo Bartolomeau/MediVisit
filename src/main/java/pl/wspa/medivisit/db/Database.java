@@ -14,10 +14,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.stream.Collectors;
 
-/**
- * Zarzadza polaczeniem z baza SQLite. Przy pierwszym uruchomieniu
- * tworzy strukture tabel (schema.sql) i wypelnia baze danymi startowymi.
- */
 public final class Database {
 
     private static final String DB_URL = "jdbc:sqlite:medivisit.db";
@@ -65,7 +61,6 @@ public final class Database {
         }
     }
 
-    /** Dane startowe: konto administratora, specjalizacje i przykladowi lekarze. */
     private static void seedIfEmpty() {
         try {
             try (Statement st = get().createStatement();

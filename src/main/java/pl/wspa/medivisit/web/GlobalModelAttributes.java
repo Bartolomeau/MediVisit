@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import pl.wspa.medivisit.model.User;
 
-/** Udostepnia zalogowanego uzytkownika we wszystkich szablonach jako ${user}. */
 @ControllerAdvice
 public class GlobalModelAttributes {
 

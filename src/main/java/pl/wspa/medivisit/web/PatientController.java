@@ -33,7 +33,6 @@ public class PatientController {
         return (User) session.getAttribute(AuthInterceptor.SESSION_USER);
     }
 
-    /** Krokowy formularz rezerwacji: specjalizacja -> lekarz -> data -> godzina. */
     @GetMapping("/book")
     public String book(@RequestParam(required = false) Integer specId,
                        @RequestParam(required = false) Integer doctorId,
@@ -78,7 +77,6 @@ public class PatientController {
             redirect.addFlashAttribute("error", "Nieprawidłowe dane rezerwacji.");
             return "redirect:/patient/book";
         }
-        // godzina musi byc jednym z aktualnie wolnych slotow
         if (!appointmentDao.findFreeSlots(doctor.get(), parsed).contains(time)) {
             redirect.addFlashAttribute("error", "Ten termin został właśnie zajęty – wybierz inną godzinę.");
             return "redirect:/patient/book?specId=" + doctor.get().getSpecializationId()

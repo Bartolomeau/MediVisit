@@ -11,7 +11,6 @@ import pl.wspa.medivisit.model.User;
 import pl.wspa.medivisit.util.PasswordUtil;
 import pl.wspa.medivisit.util.Validators;
 
-/** Profil uzytkownika - wspolny dla wszystkich rol. */
 @Controller
 public class ProfileController {
 

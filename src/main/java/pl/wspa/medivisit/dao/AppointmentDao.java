@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class AppointmentDao {
 
@@ -27,10 +28,10 @@ public class AppointmentDao {
                     + "JOIN users du ON du.id = d.user_id "
                     + "JOIN specializations s ON s.id = d.specialization_id ";
 
-    public java.util.Optional<Appointment> findById(int id) {
+    public Optional<Appointment> findById(int id) {
         String sql = BASE_SELECT + "WHERE a.id = ?";
         List<Appointment> list = query(sql, ps -> ps.setInt(1, id));
-        return list.isEmpty() ? java.util.Optional.empty() : java.util.Optional.of(list.get(0));
+        return list.isEmpty() ? Optional.empty() : Optional.of(list.get(0));
     }
 
     public List<Appointment> findByPatient(int patientId) {
@@ -56,10 +57,6 @@ public class AppointmentDao {
         return query(sql, ps -> { });
     }
 
-    /**
-     * Wolne godziny lekarza danego dnia: sloty z grafiku pomniejszone
-     * o terminy juz zarezerwowane oraz godziny, ktore juz minely.
-     */
     public List<String> findFreeSlots(Doctor doctor, LocalDate date) {
         List<String> taken = new ArrayList<>();
         String sql = "SELECT time FROM appointments WHERE doctor_id = ? AND date = ? AND status != 'ANULOWANA'";
@@ -90,7 +87,6 @@ public class AppointmentDao {
         return free;
     }
 
-    /** Zwraca false, jezeli termin zostal w miedzyczasie zajety. */
     public boolean book(int patientId, int doctorId, String date, String time, String reason) {
         String sql = "INSERT INTO appointments (patient_id, doctor_id, date, time, reason) VALUES (?,?,?,?,?)";
         try (PreparedStatement ps = Database.get().prepareStatement(sql)) {
@@ -130,8 +126,6 @@ public class AppointmentDao {
             throw new IllegalStateException("Blad zapisu zalecen", e);
         }
     }
-
-    // ---- statystyki dla panelu administratora ----
 
     public int countByStatus(String status) {
         String sql = "SELECT COUNT(*) FROM appointments WHERE status = ?";

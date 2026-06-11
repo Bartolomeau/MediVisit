@@ -12,14 +12,13 @@ public class Appointment {
     private int id;
     private int patientId;
     private int doctorId;
-    private String date;   // YYYY-MM-DD
-    private String time;   // HH:MM
+    private String date;
+    private String time;
     private String status;
     private String reason;
     private String notes;
     private String createdAt;
 
-    // pola pomocnicze z JOIN-ow
     private String patientName;
     private String doctorName;
     private String specializationName;

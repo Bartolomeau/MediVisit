@@ -9,7 +9,6 @@
 </head>
 <body>
 
-<!-- ===== menu boczne ===== -->
 <aside class="sidebar" th:fragment="sidebar(active)">
     <div class="brand">
         <img th:src="@{/logo-mark.svg}" alt="logo MediVisit" class="brand-logo">
@@ -45,7 +44,6 @@
     </div>
 </aside>
 
-<!-- ===== komunikaty flash ===== -->
 <div th:fragment="flash">
     <div class="alert alert-success" th:if="${success}" th:text="${success}"></div>
     <div class="alert alert-error" th:if="${error}" th:text="${error}"></div>
