@@ -67,10 +67,15 @@ Struktura bazy danych: [`src/main/resources/schema.sql`](src/main/resources/sche
 - Apache Maven 3.8+ (tylko do budowania ze źródeł)
 
 ### Sposób 1: gotowy plik JAR
+Kliknij dwukrotnie **start.bat** albo uruchom w wierszu poleceń:
 ```
 java -jar medivisit-1.0.0.jar
 ```
 Następnie otwórz w przeglądarce: **http://localhost:8080**
+
+> Uwaga: dwuklik bezpośrednio w plik `.jar` może otworzyć go starą Javą
+> (jeśli jest zainstalowana) i zakończyć się błędem – dlatego najpewniej
+> jest używać `start.bat` lub polecenia `java -jar`.
 
 ### Sposób 2: budowanie ze źródeł
 ```
