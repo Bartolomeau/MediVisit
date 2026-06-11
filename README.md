@@ -7,7 +7,7 @@ Projekt zespołowy systemu informatycznego – WSPA Lublin, Informatyka, semestr
 Repozytorium: https://github.com/Bartolomeau/MediVisit
 
 Aplikacja **webowa** (Java 17 + Spring Boot + Thymeleaf) do zarządzania przychodnią
-lekarską, otwierana w przeglądarce pod adresem `http://localhost:8080`:
+lekarską
 pacjenci rezerwują wizyty online, lekarze prowadzą grafik i zapisują zalecenia,
 administrator zarządza całym systemem.
 
