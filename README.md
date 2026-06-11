@@ -4,7 +4,8 @@
 
 Projekt zespołowy systemu informatycznego – WSPA Lublin, Informatyka, semestr VI.
 
-Aplikacja desktopowa (Java 17 + JavaFX) do zarządzania przychodnią lekarską:
+Aplikacja **webowa** (Java 17 + Spring Boot + Thymeleaf) do zarządzania przychodnią
+lekarską, otwierana w przeglądarce pod adresem `http://localhost:8080`:
 pacjenci rezerwują wizyty online, lekarze prowadzą grafik i zapisują zalecenia,
 administrator zarządza całym systemem.
 
@@ -35,19 +36,24 @@ administrator zarządza całym systemem.
 
 ## Bezpieczeństwo
 - hasła haszowane algorytmem **bcrypt** (jBCrypt, koszt 10),
-- walidacja danych wejściowych (e-mail, telefon, siła hasła, pola obowiązkowe),
+- walidacja danych po stronie serwera i przeglądarki (e-mail, telefon,
+  siła hasła, pola obowiązkowe, poprawność dat),
+- kontrola dostępu na podstawie ról – interceptor blokuje wejście na cudze
+  panele (`/patient`, `/doctor`, `/admin`) i wymusza zalogowanie,
 - wszystkie zapytania SQL parametryzowane (`PreparedStatement`) – ochrona
   przed SQL injection,
+- szablony Thymeleaf domyślnie escapują dane – ochrona przed XSS,
 - unikalność terminów wymuszana na poziomie bazy (`UNIQUE(doctor_id, date, time)`).
 
 ## Technologie
 | Warstwa | Technologia |
 |---|---|
 | Język | Java 17 |
-| Interfejs | JavaFX 21 + własny arkusz CSS |
+| Backend | Spring Boot 3 (Spring MVC, wbudowany Tomcat) |
+| Frontend | Thymeleaf + własny arkusz CSS |
 | Baza danych | SQLite (sqlite-jdbc) – plik `medivisit.db` |
 | Hasła | jBCrypt |
-| Budowanie | Maven (+ shade plugin → uruchamialny JAR) |
+| Budowanie | Maven (spring-boot-maven-plugin → uruchamialny JAR) |
 
 Struktura bazy danych: [`src/main/resources/schema.sql`](src/main/resources/schema.sql)
 (4 tabele: `users`, `specializations`, `doctors`, `appointments`).
@@ -62,6 +68,7 @@ Struktura bazy danych: [`src/main/resources/schema.sql`](src/main/resources/sche
 ```
 java -jar medivisit-1.0.0.jar
 ```
+Następnie otwórz w przeglądarce: **http://localhost:8080**
 
 ### Sposób 2: budowanie ze źródeł
 ```
@@ -71,7 +78,8 @@ java -jar target/medivisit-1.0.0.jar
 
 Przy pierwszym uruchomieniu aplikacja sama tworzy plik bazy `medivisit.db`
 (struktura ze `schema.sql`) i wypełnia go danymi startowymi – nie trzeba
-instalować ani konfigurować żadnego serwera bazy danych.
+instalować ani konfigurować żadnego serwera bazy danych. Aby zacząć od
+czystej bazy, wystarczy usunąć plik `medivisit.db` i uruchomić ponownie.
 
 ### Konta demonstracyjne
 | Rola | Login | Hasło |
@@ -80,22 +88,24 @@ instalować ani konfigurować żadnego serwera bazy danych.
 | Lekarz | `j.kowalski@medivisit.pl` | `Lekarz123!` |
 | Pacjent | `pacjent@medivisit.pl` | `Pacjent123!` |
 
-Nowych pacjentów można rejestrować z poziomu okna logowania
+Nowych pacjentów można rejestrować z poziomu strony logowania
 („Nie masz konta? Zarejestruj się”).
 
 ## Struktura projektu
 ```
 MediVisit/
-├── pom.xml                  konfiguracja Maven
-├── assets/logo.svg          logo aplikacji
+├── pom.xml                       konfiguracja Maven
+├── assets/logo.svg               logo aplikacji
 ├── src/main/resources/
-│   ├── schema.sql           definicja struktury bazy danych
-│   └── styles.css           arkusz stylów interfejsu
+│   ├── schema.sql                definicja struktury bazy danych
+│   ├── application.properties    konfiguracja Spring Boot
+│   ├── static/                   CSS i logo
+│   └── templates/                szablony Thymeleaf (widoki)
 └── src/main/java/pl/wspa/medivisit/
-    ├── Main.java, App.java  start aplikacji i nawigacja
-    ├── db/                  połączenie z bazą, inicjalizacja, dane startowe
-    ├── dao/                 operacje na danych (CRUD)
-    ├── model/               klasy encji
-    ├── util/                bcrypt, walidacja, sesja użytkownika
-    └── ui/                  widoki JavaFX (logowanie, panele ról)
+    ├── Main.java                 start aplikacji (Spring Boot)
+    ├── db/                       połączenie z bazą, inicjalizacja, dane startowe
+    ├── dao/                      operacje na danych (CRUD)
+    ├── model/                    klasy encji
+    ├── util/                     bcrypt, walidacja
+    └── web/                      kontrolery, kontrola dostępu (interceptor)
 ```

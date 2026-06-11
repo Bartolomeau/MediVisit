@@ -29,6 +29,12 @@ public class DoctorDao {
         return query(sql, ps -> ps.setInt(1, specializationId));
     }
 
+    public Optional<Doctor> findById(int id) {
+        String sql = BASE_SELECT + "WHERE d.id = ?";
+        List<Doctor> list = query(sql, ps -> ps.setInt(1, id));
+        return list.isEmpty() ? Optional.empty() : Optional.of(list.get(0));
+    }
+
     public Optional<Doctor> findByUserId(int userId) {
         String sql = BASE_SELECT + "WHERE d.user_id = ?";
         List<Doctor> list = query(sql, ps -> ps.setInt(1, userId));

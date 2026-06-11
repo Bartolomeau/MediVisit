@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl">
+<head th:replace="~{fragments :: head('Wizyty')}"></head>
+<body>
+<div class="app">
+    <aside th:replace="~{fragments :: sidebar('visits')}"></aside>
+
+    <main class="content">
+        <h1>Wszystkie wizyty</h1>
+        <div th:replace="~{fragments :: flash}"></div>
+
+        <div class="card">
+            <form method="get" th:action="@{/admin/visits}" class="filter-form">
+                <div>
+                    <label for="status">Filtruj po statusie</label>
+                    <select id="status" name="status" onchange="this.form.submit()">
+                        <option th:selected="${status == 'Wszystkie'}">Wszystkie</option>
+                        <option value="ZAPLANOWANA" th:selected="${status == 'ZAPLANOWANA'}">ZAPLANOWANA</option>
+                        <option value="ODBYTA" th:selected="${status == 'ODBYTA'}">ODBYTA</option>
+                        <option value="ANULOWANA" th:selected="${status == 'ANULOWANA'}">ANULOWANA</option>
+                    </select>
+                </div>
+            </form>
+
+            <p class="subtitle" th:if="${#lists.isEmpty(visits)}">Brak wizyt.</p>
+
+            <table th:if="${not #lists.isEmpty(visits)}">
+                <thead>
+                <tr><th>Data</th><th>Godzina</th><th>Pacjent</th><th>Lekarz</th>
+                    <th>Specjalizacja</th><th>Status</th><th>Powód wizyty</th></tr>
+                </thead>
+                <tbody>
+                <tr th:each="v : ${visits}">
+                    <td th:text="${v.date}"></td>
+                    <td th:text="${v.time}"></td>
+                    <td th:text="${v.patientName}"></td>
+                    <td th:text="${v.doctorName}"></td>
+                    <td th:text="${v.specializationName}"></td>
+                    <td><span th:text="${v.status}"
+                              th:classappend="${v.status == 'ZAPLANOWANA'} ? 'status-planned'
+                                            : (${v.status == 'ODBYTA'} ? 'status-done' : 'status-cancelled')"></span></td>
+                    <td th:text="${v.reason}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+</body>
+</html>

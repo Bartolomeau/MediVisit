@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl">
+<head th:replace="~{fragments :: head('Lekarz')}"></head>
+<body>
+<div class="app">
+    <aside th:replace="~{fragments :: sidebar('doctors')}"></aside>
+
+    <main class="content">
+        <h1 th:text="${isNew} ? 'Nowy lekarz' : 'Edycja lekarza'">Lekarz</h1>
+        <div th:replace="~{fragments :: flash}"></div>
+
+        <div class="card card-narrow">
+            <form method="post"
+                  th:action="${isNew} ? @{/admin/doctors/new} : @{'/admin/doctors/' + ${doctor.id} + '/edit'}">
+                <div class="form-row">
+                    <div>
+                        <label for="firstName">Imię</label>
+                        <input type="text" id="firstName" name="firstName"
+                               th:value="${doctor != null} ? ${doctor.firstName} : ''" required>
+                    </div>
+                    <div>
+                        <label for="lastName">Nazwisko</label>
+                        <input type="text" id="lastName" name="lastName"
+                               th:value="${doctor != null} ? ${doctor.lastName} : ''" required>
+                    </div>
+                </div>
+
+                <div th:if="${isNew}">
+                    <label for="email">E-mail (login)</label>
+                    <input type="email" id="email" name="email" required>
+
+                    <label for="password">Hasło startowe (min. 8 znaków, litera i cyfra)</label>
+                    <input type="password" id="password" name="password" minlength="8" required>
+                </div>
+
+                <label for="specId">Specjalizacja</label>
+                <select id="specId" name="specId" required>
+                    <option th:each="s : ${specs}" th:value="${s.id}" th:text="${s.name}"
+                            th:selected="${doctor != null and doctor.specializationId == s.id}"></option>
+                </select>
+
+                <label for="room">Gabinet</label>
+                <input type="text" id="room" name="room"
+                       th:value="${doctor != null} ? ${doctor.room} : ''" required>
+
+                <div class="form-row">
+                    <div>
+                        <label for="workStart">Przyjmuje od</label>
+                        <input type="time" id="workStart" name="workStart" step="1800"
+                               th:value="${doctor != null} ? ${doctor.workStart} : '08:00'" required>
+                    </div>
+                    <div>
+                        <label for="workEnd">Przyjmuje do</label>
+                        <input type="time" id="workEnd" name="workEnd" step="1800"
+                               th:value="${doctor != null} ? ${doctor.workEnd} : '16:00'" required>
+                    </div>
+                    <div>
+                        <label for="slotMinutes">Wizyta (min)</label>
+                        <input type="number" id="slotMinutes" name="slotMinutes" min="10" max="60" step="5"
+                               th:value="${doctor != null} ? ${doctor.slotMinutes} : 30" required>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button type="submit" class="btn btn-primary">Zapisz</button>
+                    <a th:href="@{/admin/doctors}" class="btn btn-link">Anuluj</a>
+                </div>
+            </form>
+        </div>
+    </main>
+</div>
+</body>
+</html>

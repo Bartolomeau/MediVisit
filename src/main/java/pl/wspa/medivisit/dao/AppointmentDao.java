@@ -27,6 +27,12 @@ public class AppointmentDao {
                     + "JOIN users du ON du.id = d.user_id "
                     + "JOIN specializations s ON s.id = d.specialization_id ";
 
+    public java.util.Optional<Appointment> findById(int id) {
+        String sql = BASE_SELECT + "WHERE a.id = ?";
+        List<Appointment> list = query(sql, ps -> ps.setInt(1, id));
+        return list.isEmpty() ? java.util.Optional.empty() : java.util.Optional.of(list.get(0));
+    }
+
     public List<Appointment> findByPatient(int patientId) {
         String sql = BASE_SELECT + "WHERE a.patient_id = ? ORDER BY a.date DESC, a.time DESC";
         return query(sql, ps -> ps.setInt(1, patientId));

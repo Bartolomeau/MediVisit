@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl">
+<head th:replace="~{fragments :: head('Użytkownicy')}"></head>
+<body>
+<div class="app">
+    <aside th:replace="~{fragments :: sidebar('users')}"></aside>
+
+    <main class="content">
+        <h1>Użytkownicy systemu</h1>
+        <div th:replace="~{fragments :: flash}"></div>
+
+        <div class="card">
+            <table>
+                <thead>
+                <tr><th>Imię i nazwisko</th><th>E-mail</th><th>Telefon</th><th>Rola</th>
+                    <th>Utworzono</th><th></th></tr>
+                </thead>
+                <tbody>
+                <tr th:each="u : ${users}">
+                    <td th:text="${u.fullName}"></td>
+                    <td th:text="${u.email}"></td>
+                    <td th:text="${u.phone}"></td>
+                    <td th:text="${u.roleDisplay}"></td>
+                    <td th:text="${u.createdAt}"></td>
+                    <td>
+                        <form method="post" th:action="@{'/admin/users/' + ${u.id} + '/delete'}"
+                              th:if="${u.id != user.id}"
+                              onsubmit="return confirm('Usunąć to konto wraz z powiązanymi danymi?');">
+                            <button type="submit" class="btn btn-danger btn-small">Usuń</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+</body>
+</html>

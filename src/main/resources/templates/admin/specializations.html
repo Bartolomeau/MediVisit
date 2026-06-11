@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl">
+<head th:replace="~{fragments :: head('Specjalizacje')}"></head>
+<body>
+<div class="app">
+    <aside th:replace="~{fragments :: sidebar('specs')}"></aside>
+
+    <main class="content">
+        <h1>Specjalizacje</h1>
+        <div th:replace="~{fragments :: flash}"></div>
+
+        <div class="card card-narrow">
+            <form method="post" th:action="@{/admin/specializations}" class="inline-form">
+                <input type="text" name="name" placeholder="nazwa nowej specjalizacji" required>
+                <button type="submit" class="btn btn-primary">Dodaj</button>
+            </form>
+
+            <table th:if="${not #lists.isEmpty(specs)}">
+                <thead><tr><th>Nazwa</th><th>Akcje</th></tr></thead>
+                <tbody>
+                <tr th:each="s : ${specs}">
+                    <td th:text="${s.name}"></td>
+                    <td class="actions">
+                        <form method="post" th:action="@{'/admin/specializations/' + ${s.id} + '/rename'}"
+                              class="inline-form">
+                            <input type="text" name="name" th:value="${s.name}" required>
+                            <button type="submit" class="btn btn-accent btn-small">Zmień nazwę</button>
+                        </form>
+                        <form method="post" th:action="@{'/admin/specializations/' + ${s.id} + '/delete'}"
+                              onsubmit="return confirm('Usunąć tę specjalizację?');">
+                            <button type="submit" class="btn btn-danger btn-small">Usuń</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+</body>
+</html>

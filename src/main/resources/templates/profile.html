@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl">
+<head th:replace="~{fragments :: head('Mój profil')}"></head>
+<body>
+<div class="app">
+    <aside th:replace="~{fragments :: sidebar('profile')}"></aside>
+
+    <main class="content">
+        <h1>Mój profil</h1>
+        <div th:replace="~{fragments :: flash}"></div>
+        <div class="alert alert-error" th:if="${errorPass}" th:text="${errorPass}"></div>
+
+        <div class="cards-row">
+            <div class="card">
+                <h2>Dane profilu</h2>
+                <form method="post" th:action="@{/profile}">
+                    <label for="firstName">Imię</label>
+                    <input type="text" id="firstName" name="firstName" th:value="${user.firstName}" required>
+
+                    <label for="lastName">Nazwisko</label>
+                    <input type="text" id="lastName" name="lastName" th:value="${user.lastName}" required>
+
+                    <label for="phone">Telefon (9 cyfr)</label>
+                    <input type="tel" id="phone" name="phone" th:value="${user.phone}" pattern="[0-9]{9}" required>
+
+                    <label>E-mail (login)</label>
+                    <input type="email" th:value="${user.email}" disabled>
+
+                    <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h2>Zmiana hasła</h2>
+                <form method="post" th:action="@{/profile/password}">
+                    <label for="current">Obecne hasło</label>
+                    <input type="password" id="current" name="current" required>
+
+                    <label for="newPassword">Nowe hasło</label>
+                    <input type="password" id="newPassword" name="newPassword" minlength="8" required>
+
+                    <label for="confirm">Powtórz nowe hasło</label>
+                    <input type="password" id="confirm" name="confirm" minlength="8" required>
+
+                    <button type="submit" class="btn btn-accent">Zmień hasło</button>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl">
+<head th:replace="~{fragments :: head('Wszystkie wizyty')}"></head>
+<body>
+<div class="app">
+    <aside th:replace="~{fragments :: sidebar('all')}"></aside>
+
+    <main class="content">
+        <h1>Wszystkie moje wizyty</h1>
+        <div th:replace="~{fragments :: flash}"></div>
+
+        <div class="card">
+            <p class="subtitle" th:if="${#lists.isEmpty(visits)}">Brak wizyt.</p>
+
+            <table th:if="${not #lists.isEmpty(visits)}">
+                <thead>
+                <tr><th>Data</th><th>Godzina</th><th>Pacjent</th><th>Status</th>
+                    <th>Powód wizyty</th><th>Zalecenia</th></tr>
+                </thead>
+                <tbody>
+                <tr th:each="v : ${visits}">
+                    <td th:text="${v.date}"></td>
+                    <td th:text="${v.time}"></td>
+                    <td th:text="${v.patientName}"></td>
+                    <td><span th:text="${v.status}"
+                              th:classappend="${v.status == 'ZAPLANOWANA'} ? 'status-planned'
+                                            : (${v.status == 'ODBYTA'} ? 'status-done' : 'status-cancelled')"></span></td>
+                    <td th:text="${v.reason}"></td>
+                    <td th:text="${v.notes}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl">
+<head th:replace="~{fragments :: head('Grafik dnia')}"></head>
+<body>
+<div class="app">
+    <aside th:replace="~{fragments :: sidebar('day')}"></aside>
+
+    <main class="content">
+        <h1>Grafik dnia</h1>
+        <p class="subtitle"
+           th:text="${doctor.specializationName + ' • gabinet ' + doctor.room
+                    + ' • przyjęcia ' + doctor.workStart + '–' + doctor.workEnd
+                    + ' • wizyta co ' + doctor.slotMinutes + ' min'}"></p>
+        <div th:replace="~{fragments :: flash}"></div>
+
+        <div class="card">
+            <form method="get" th:action="@{/doctor/day}" class="filter-form">
+                <div>
+                    <label for="date">Dzień</label>
+                    <input type="date" id="date" name="date" th:value="${date}" onchange="this.form.submit()">
+                </div>
+            </form>
+
+            <p class="subtitle" th:if="${#lists.isEmpty(visits)}">Brak wizyt w wybranym dniu.</p>
+
+            <table th:if="${not #lists.isEmpty(visits)}">
+                <thead>
+                <tr><th>Godzina</th><th>Pacjent</th><th>Status</th><th>Powód wizyty</th>
+                    <th>Zalecenia</th><th>Akcje</th></tr>
+                </thead>
+                <tbody>
+                <tr th:each="v : ${visits}">
+                    <td th:text="${v.time}"></td>
+                    <td th:text="${v.patientName}"></td>
+                    <td><span th:text="${v.status}"
+                              th:classappend="${v.status == 'ZAPLANOWANA'} ? 'status-planned'
+                                            : (${v.status == 'ODBYTA'} ? 'status-done' : 'status-cancelled')"></span></td>
+                    <td th:text="${v.reason}"></td>
+                    <td th:text="${v.notes}"></td>
+                    <td class="actions" th:if="${v.status == 'ZAPLANOWANA'}">
+                        <details>
+                            <summary class="btn btn-accent btn-small">Odbyta + zalecenia</summary>
+                            <form method="post" th:action="@{'/doctor/visits/' + ${v.id} + '/complete'}"
+                                  class="notes-form">
+                                <input type="hidden" name="date" th:value="${date}">
+                                <textarea name="notes" rows="3" maxlength="1000"
+                                          placeholder="zalecenia dla pacjenta, leki itd."></textarea>
+                                <button type="submit" class="btn btn-accent btn-small">Zapisz</button>
+                            </form>
+                        </details>
+                        <form method="post" th:action="@{'/doctor/visits/' + ${v.id} + '/cancel'}"
+                              onsubmit="return confirm('Anulować tę wizytę?');">
+                            <input type="hidden" name="date" th:value="${date}">
+                            <button type="submit" class="btn btn-danger btn-small">Anuluj</button>
+                        </form>
+                    </td>
+                    <td th:unless="${v.status == 'ZAPLANOWANA'}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+</body>
+</html>

@@ -1,13 +1,14 @@
 package pl.wspa.medivisit;
 
-/**
- * Klasa startowa. Nie dziedziczy po javafx.application.Application,
- * dzieki czemu aplikacje mozna uruchomic takze z pliku JAR
- * (java -jar medivisit-1.0.0.jar) bez konfigurowania modulow JavaFX.
- */
-public final class Main {
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import pl.wspa.medivisit.db.Database;
+
+@SpringBootApplication
+public class Main {
 
     public static void main(String[] args) {
-        App.main(args);
+        Database.init();
+        SpringApplication.run(Main.class, args);
     }
 }

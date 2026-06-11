@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl">
+<head th:replace="~{fragments :: head('Lekarze')}"></head>
+<body>
+<div class="app">
+    <aside th:replace="~{fragments :: sidebar('doctors')}"></aside>
+
+    <main class="content">
+        <div class="page-head">
+            <h1>Lekarze</h1>
+            <a th:href="@{/admin/doctors/new}" class="btn btn-primary">+ Dodaj lekarza</a>
+        </div>
+        <div th:replace="~{fragments :: flash}"></div>
+
+        <div class="card">
+            <p class="subtitle" th:if="${#lists.isEmpty(doctors)}">Brak lekarzy w systemie.</p>
+
+            <table th:if="${not #lists.isEmpty(doctors)}">
+                <thead>
+                <tr><th>Imię i nazwisko</th><th>Specjalizacja</th><th>E-mail</th><th>Gabinet</th>
+                    <th>Godziny przyjęć</th><th>Wizyta</th><th>Akcje</th></tr>
+                </thead>
+                <tbody>
+                <tr th:each="d : ${doctors}">
+                    <td th:text="${d.firstName + ' ' + d.lastName}"></td>
+                    <td th:text="${d.specializationName}"></td>
+                    <td th:text="${d.email}"></td>
+                    <td th:text="${d.room}"></td>
+                    <td th:text="${d.workStart + '–' + d.workEnd}"></td>
+                    <td th:text="${d.slotMinutes + ' min'}"></td>
+                    <td class="actions">
+                        <a th:href="@{'/admin/doctors/' + ${d.id} + '/edit'}"
+                           class="btn btn-accent btn-small">Edytuj</a>
+                        <form method="post" th:action="@{'/admin/doctors/' + ${d.id} + '/delete'}"
+                              onsubmit="return confirm('Usunąć konto lekarza wraz z jego wizytami?');">
+                            <button type="submit" class="btn btn-danger btn-small">Usuń</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+</body>
+</html>

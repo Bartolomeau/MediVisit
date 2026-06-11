@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl">
+<head th:replace="~{fragments :: head('Moje wizyty')}"></head>
+<body>
+<div class="app">
+    <aside th:replace="~{fragments :: sidebar('visits')}"></aside>
+
+    <main class="content">
+        <h1>Moje wizyty</h1>
+        <div th:replace="~{fragments :: flash}"></div>
+
+        <div class="card">
+            <p class="subtitle" th:if="${#lists.isEmpty(visits)}">
+                Nie masz jeszcze żadnych wizyt – umów pierwszą w zakładce „Umów wizytę”.</p>
+
+            <table th:if="${not #lists.isEmpty(visits)}">
+                <thead>
+                <tr>
+                    <th>Data</th><th>Godzina</th><th>Lekarz</th><th>Specjalizacja</th>
+                    <th>Gabinet</th><th>Status</th><th>Powód wizyty</th><th>Zalecenia</th><th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="v : ${visits}">
+                    <td th:text="${v.date}"></td>
+                    <td th:text="${v.time}"></td>
+                    <td th:text="${v.doctorName}"></td>
+                    <td th:text="${v.specializationName}"></td>
+                    <td th:text="${v.room}"></td>
+                    <td><span th:text="${v.status}"
+                              th:classappend="${v.status == 'ZAPLANOWANA'} ? 'status-planned'
+                                            : (${v.status == 'ODBYTA'} ? 'status-done' : 'status-cancelled')"></span></td>
+                    <td th:text="${v.reason}"></td>
+                    <td th:text="${v.status == 'ODBYTA' ? (v.notes ?: '–') : ''}"></td>
+                    <td>
+                        <form method="post" th:action="@{'/patient/visits/' + ${v.id} + '/cancel'}"
+                              th:if="${v.status == 'ZAPLANOWANA' and v.upcoming}"
+                              onsubmit="return confirm('Czy na pewno anulować tę wizytę?');">
+                            <button type="submit" class="btn btn-danger btn-small">Anuluj</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+</body>
+</html>

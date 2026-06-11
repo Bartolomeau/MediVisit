@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${title} + ' – MediVisit'">MediVisit</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="icon" th:href="@{/logo.svg}" type="image/svg+xml">
+</head>
+<body>
+
+<!-- ===== menu boczne ===== -->
+<aside class="sidebar" th:fragment="sidebar(active)">
+    <div class="brand">
+        <img th:src="@{/logo-mark.svg}" alt="logo MediVisit" class="brand-logo">
+        <div>
+            <div class="brand-name">Medi<span>Visit</span></div>
+            <div class="brand-sub" th:text="${user.roleDisplay}">rola</div>
+        </div>
+    </div>
+
+    <nav th:if="${user.role == 'PATIENT'}">
+        <a th:href="@{/patient/book}" th:classappend="${active == 'book'} ? 'active'">Umów wizytę</a>
+        <a th:href="@{/patient/visits}" th:classappend="${active == 'visits'} ? 'active'">Moje wizyty</a>
+        <a th:href="@{/profile}" th:classappend="${active == 'profile'} ? 'active'">Mój profil</a>
+    </nav>
+    <nav th:if="${user.role == 'DOCTOR'}">
+        <a th:href="@{/doctor/day}" th:classappend="${active == 'day'} ? 'active'">Grafik dnia</a>
+        <a th:href="@{/doctor/all}" th:classappend="${active == 'all'} ? 'active'">Wszystkie wizyty</a>
+        <a th:href="@{/profile}" th:classappend="${active == 'profile'} ? 'active'">Mój profil</a>
+    </nav>
+    <nav th:if="${user.role == 'ADMIN'}">
+        <a th:href="@{/admin/stats}" th:classappend="${active == 'stats'} ? 'active'">Statystyki</a>
+        <a th:href="@{/admin/doctors}" th:classappend="${active == 'doctors'} ? 'active'">Lekarze</a>
+        <a th:href="@{/admin/specializations}" th:classappend="${active == 'specs'} ? 'active'">Specjalizacje</a>
+        <a th:href="@{/admin/users}" th:classappend="${active == 'users'} ? 'active'">Użytkownicy</a>
+        <a th:href="@{/admin/visits}" th:classappend="${active == 'visits'} ? 'active'">Wizyty</a>
+        <a th:href="@{/profile}" th:classappend="${active == 'profile'} ? 'active'">Mój profil</a>
+    </nav>
+
+    <div class="sidebar-footer">
+        <div class="user-name" th:text="${user.fullName}">Jan Kowalski</div>
+        <div class="user-email" th:text="${user.email}">email</div>
+        <a th:href="@{/logout}" class="btn btn-danger btn-block">Wyloguj się</a>
+    </div>
+</aside>
+
+<!-- ===== komunikaty flash ===== -->
+<div th:fragment="flash">
+    <div class="alert alert-success" th:if="${success}" th:text="${success}"></div>
+    <div class="alert alert-error" th:if="${error}" th:text="${error}"></div>
+</div>
+
+</body>
+</html>

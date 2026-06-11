@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl">
+<head th:replace="~{fragments :: head('Umów wizytę')}"></head>
+<body>
+<div class="app">
+    <aside th:replace="~{fragments :: sidebar('book')}"></aside>
+
+    <main class="content">
+        <h1>Umów wizytę</h1>
+        <div th:replace="~{fragments :: flash}"></div>
+
+        <div class="card">
+            <!-- krok 1-3: wybor specjalizacji, lekarza i daty (GET przeladowuje liste) -->
+            <form method="get" th:action="@{/patient/book}" class="filter-form">
+                <div>
+                    <label for="specId">Specjalizacja</label>
+                    <select id="specId" name="specId" onchange="this.form.submit()">
+                        <option value="">– wybierz –</option>
+                        <option th:each="s : ${specs}" th:value="${s.id}" th:text="${s.name}"
+                                th:selected="${specId == s.id}"></option>
+                    </select>
+                </div>
+                <div th:if="${doctors != null}">
+                    <label for="doctorId">Lekarz</label>
+                    <select id="doctorId" name="doctorId" onchange="this.form.submit()">
+                        <option value="">– wybierz –</option>
+                        <option th:each="d : ${doctors}" th:value="${d.id}"
+                                th:text="${d.fullName + ' (gab. ' + d.room + ')'}"
+                                th:selected="${doctorId == d.id}"></option>
+                    </select>
+                </div>
+                <div th:if="${doctor != null}">
+                    <label for="date">Data wizyty</label>
+                    <input type="date" id="date" name="date" th:value="${date}" th:min="${minDate}"
+                           onchange="this.form.submit()">
+                </div>
+                <noscript><button type="submit" class="btn btn-primary">Dalej</button></noscript>
+            </form>
+
+            <p class="subtitle" th:if="${doctor != null}"
+               th:text="${doctor.specializationName + ' • gabinet ' + doctor.room
+                        + ' • przyjmuje ' + doctor.workStart + '–' + doctor.workEnd
+                        + ' (pn–pt)'}"></p>
+            <p class="alert alert-error" th:if="${dateError}" th:text="${dateError}"></p>
+
+            <!-- krok 4: wybor godziny i potwierdzenie -->
+            <div th:if="${slots != null}">
+                <h2>Wolne godziny</h2>
+                <p class="subtitle" th:if="${#lists.isEmpty(slots)}">
+                    Brak wolnych terminów w wybranym dniu – wybierz inną datę.</p>
+
+                <form method="post" th:action="@{/patient/book}" th:if="${not #lists.isEmpty(slots)}">
+                    <input type="hidden" name="doctorId" th:value="${doctorId}">
+                    <input type="hidden" name="date" th:value="${date}">
+
+                    <div class="slots">
+                        <label class="slot" th:each="slot, it : ${slots}">
+                            <input type="radio" name="time" th:value="${slot}" th:required="${it.first}">
+                            <span th:text="${slot}">08:00</span>
+                        </label>
+                    </div>
+
+                    <label for="reason">Powód wizyty (opcjonalnie)</label>
+                    <textarea id="reason" name="reason" rows="2" maxlength="500"
+                              placeholder="np. ból gardła, badanie kontrolne"></textarea>
+
+                    <button type="submit" class="btn btn-primary">Zarezerwuj wizytę</button>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>

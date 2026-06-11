@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl">
+<head th:replace="~{fragments :: head('Statystyki')}"></head>
+<body>
+<div class="app">
+    <aside th:replace="~{fragments :: sidebar('stats')}"></aside>
+
+    <main class="content">
+        <h1>Statystyki przychodni</h1>
+        <div th:replace="~{fragments :: flash}"></div>
+
+        <div class="stats-row">
+            <div class="stat-card"><div class="stat-value" th:text="${patients}">0</div>
+                <div class="stat-label">pacjentów</div></div>
+            <div class="stat-card"><div class="stat-value" th:text="${doctorsCount}">0</div>
+                <div class="stat-label">lekarzy</div></div>
+            <div class="stat-card"><div class="stat-value" th:text="${planned}">0</div>
+                <div class="stat-label">wizyt zaplanowanych</div></div>
+            <div class="stat-card"><div class="stat-value" th:text="${done}">0</div>
+                <div class="stat-label">wizyt odbytych</div></div>
+            <div class="stat-card"><div class="stat-value" th:text="${cancelled}">0</div>
+                <div class="stat-label">wizyt anulowanych</div></div>
+        </div>
+
+        <div class="card">
+            <h2>Wizyty według specjalizacji</h2>
+            <div class="bar-chart">
+                <div class="bar-row" th:each="entry : ${bySpec}">
+                    <div class="bar-label" th:text="${entry.key}">specjalizacja</div>
+                    <div class="bar-track">
+                        <div class="bar-fill"
+                             th:style="'width: ' + ${entry.value * 100 / maxSpec} + '%'"></div>
+                    </div>
+                    <div class="bar-value" th:text="${entry.value}">0</div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>
