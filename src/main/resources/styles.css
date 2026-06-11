@@ -1,0 +1,192 @@
+/* ===== MediVisit – arkusz stylow ===== */
+
+.root {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 13px;
+    -fx-background-color: #eef3f8;
+}
+
+/* --- karty (panele logowania / rejestracji / sekcje) --- */
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 14;
+    -fx-padding: 32;
+    -fx-effect: dropshadow(gaussian, rgba(20, 60, 120, 0.16), 24, 0.2, 0, 6);
+}
+
+.heading {
+    -fx-font-size: 21px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #15334f;
+}
+
+.subtitle {
+    -fx-text-fill: #6b7f93;
+}
+
+/* --- pola formularzy --- */
+.text-field, .password-field, .combo-box, .date-picker, .text-area, .spinner {
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: #c6d4e2;
+    -fx-border-width: 1;
+    -fx-background-color: #fbfdff;
+}
+
+.text-field:focused, .password-field:focused, .text-area:focused {
+    -fx-border-color: #1976d2;
+}
+
+.field-error {
+    -fx-text-fill: #d32f2f;
+    -fx-font-size: 11.5px;
+}
+
+/* --- przyciski --- */
+.button {
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+
+.btn-primary {
+    -fx-background-color: #1976d2;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 9 22 9 22;
+}
+
+.btn-primary:hover {
+    -fx-background-color: #145ea8;
+}
+
+.btn-accent {
+    -fx-background-color: #26a69a;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 9 22 9 22;
+}
+
+.btn-accent:hover {
+    -fx-background-color: #1d847a;
+}
+
+.btn-danger {
+    -fx-background-color: #e5535a;
+    -fx-text-fill: white;
+    -fx-padding: 8 18 8 18;
+}
+
+.btn-danger:hover {
+    -fx-background-color: #c43a41;
+}
+
+.btn-link {
+    -fx-background-color: transparent;
+    -fx-text-fill: #1976d2;
+    -fx-underline: true;
+}
+
+/* --- panel boczny --- */
+.sidebar {
+    -fx-background-color: #15334f;
+    -fx-padding: 22 14 22 14;
+}
+
+.sidebar .label {
+    -fx-text-fill: #c9d8e6;
+}
+
+.sidebar-title {
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.nav-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #c9d8e6;
+    -fx-alignment: center-left;
+    -fx-padding: 10 14 10 14;
+    -fx-background-radius: 8;
+    -fx-font-size: 13.5px;
+}
+
+.nav-button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.10);
+    -fx-text-fill: white;
+}
+
+.nav-button-active {
+    -fx-background-color: #1976d2;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+/* --- sloty terminow --- */
+.slot-button {
+    -fx-background-color: white;
+    -fx-border-color: #1976d2;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-text-fill: #1976d2;
+    -fx-padding: 7 14 7 14;
+}
+
+.slot-button:hover {
+    -fx-background-color: #e3f0fc;
+}
+
+.slot-button:selected {
+    -fx-background-color: #1976d2;
+    -fx-text-fill: white;
+}
+
+/* --- tabele --- */
+.table-view {
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #d5e0ea;
+}
+
+.table-view .column-header {
+    -fx-background-color: #f2f7fc;
+}
+
+.table-view .column-header .label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #15334f;
+}
+
+/* --- statusy wizyt --- */
+.status-planned {
+    -fx-text-fill: #1976d2;
+    -fx-font-weight: bold;
+}
+
+.status-done {
+    -fx-text-fill: #2e7d32;
+    -fx-font-weight: bold;
+}
+
+.status-cancelled {
+    -fx-text-fill: #b0353b;
+    -fx-font-weight: bold;
+}
+
+/* --- kafelki statystyk --- */
+.stat-card {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-padding: 18 26 18 26;
+    -fx-effect: dropshadow(gaussian, rgba(20, 60, 120, 0.10), 14, 0.15, 0, 3);
+}
+
+.stat-value {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1976d2;
+}
+
+.stat-label {
+    -fx-text-fill: #6b7f93;
+}

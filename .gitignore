@@ -1,0 +1,6 @@
+target/
+medivisit.db
+*.class
+.idea/
+*.iml
+.vscode/
