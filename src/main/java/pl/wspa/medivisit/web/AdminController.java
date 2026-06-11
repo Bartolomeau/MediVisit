@@ -101,8 +101,8 @@ public class AdminController {
         user.setPhone(null);
         user.setPasswordHash(PasswordUtil.hash(password));
         user.setRole(User.ROLE_DOCTOR);
-        int userId = userDao.insert(user);
-        doctorDao.insert(userId, specId, room.trim(), workStart, workEnd, slotMinutes);
+        // konto i profil lekarza powstaja w jednej transakcji
+        doctorDao.createWithAccount(user, specId, room.trim(), workStart, workEnd, slotMinutes);
 
         redirect.addFlashAttribute("success", "Lekarz " + firstName + " " + lastName + " został dodany.");
         return "redirect:/admin/doctors";

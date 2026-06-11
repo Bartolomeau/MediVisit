@@ -41,6 +41,32 @@ public class DoctorDao {
         return list.isEmpty() ? Optional.empty() : Optional.of(list.get(0));
     }
 
+    /**
+     * Tworzy konto uzytkownika i profil lekarza w jednej transakcji -
+     * jezeli ktorykolwiek INSERT sie nie powiedzie, oba sa wycofywane.
+     */
+    public void createWithAccount(pl.wspa.medivisit.model.User user, int specializationId, String room,
+                                  String workStart, String workEnd, int slotMinutes) {
+        java.sql.Connection con = Database.get();
+        try {
+            con.setAutoCommit(false);
+            int userId = new UserDao().insert(user);
+            insert(userId, specializationId, room, workStart, workEnd, slotMinutes);
+            con.commit();
+        } catch (Exception e) {
+            try {
+                con.rollback();
+            } catch (SQLException ignored) {
+            }
+            throw new IllegalStateException("Blad tworzenia konta lekarza", e);
+        } finally {
+            try {
+                con.setAutoCommit(true);
+            } catch (SQLException ignored) {
+            }
+        }
+    }
+
     public void insert(int userId, int specializationId, String room,
                        String workStart, String workEnd, int slotMinutes) {
         String sql = "INSERT INTO doctors (user_id, specialization_id, room, work_start, work_end, slot_minutes) "
